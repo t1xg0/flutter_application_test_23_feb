@@ -14,4 +14,30 @@ class Lugar {
     required this.descripcionLarga,
     required this.imagen,
   });
+
+  factory Lugar.fromJson(Map<String, dynamic> json) {
+    return Lugar(
+      id: json['id'] as int,
+      nombre: (json['nombre'] ?? '') as String,
+      categoria: (json['categoria'] ?? '') as String,
+      descripcionCorta:
+          (json['descripcion_corta'] ?? json['descripcionCorta'] ?? '')
+              as String,
+      descripcionLarga:
+          (json['descripcion_larga'] ?? json['descripcionLarga'] ?? '')
+              as String,
+      imagen: (json['imagen'] ?? json['imagen_url'] ?? '') as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nombre': nombre,
+      'categoria': categoria,
+      'descripcion_corta': descripcionCorta,
+      'descripcion_larga': descripcionLarga,
+      'imagen': imagen,
+    };
+  }
 }

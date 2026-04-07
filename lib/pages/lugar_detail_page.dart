@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/lugar.dart';
 
 class LugarDetailPage extends StatefulWidget {
@@ -41,6 +42,15 @@ class _LugarDetailPageState extends State<LugarDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(lugar.nombre),
+        actions: [
+          IconButton(
+            onPressed: _toggleFavorito,
+            icon: Icon(
+              _esFavorito ? Icons.star : Icons.star_border,
+              color: _esFavorito ? Colors.amber : null,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -49,62 +59,49 @@ class _LugarDetailPageState extends State<LugarDetailPage> {
             Image.asset(
               lugar.imagen,
               width: double.infinity,
-              height: 230,
+              height: 240,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: double.infinity,
+                  height: 240,
+                  alignment: Alignment.center,
+                  color: Colors.grey.shade300,
+                  child: const Icon(Icons.image_not_supported, size: 48),
+                );
+              },
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: Row(
                 children: [
-                  Text(
-                    lugar.nombre,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                  Expanded(
                     child: Text(
-                      lugar.categoria,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      lugar.nombre,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    lugar.descripcionLarga,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      onPressed: _toggleFavorito,
-                      icon: Icon(
-                        _esFavorito ? Icons.star : Icons.star_border,
-                      ),
-                      label: Text(
-                        _esFavorito
-                            ? 'Quitar de favoritos'
-                            : 'Marcar como favorito',
-                      ),
+                  IconButton(
+                    onPressed: _toggleFavorito,
+                    icon: Icon(
+                      _esFavorito ? Icons.star : Icons.star_border,
+                      color: _esFavorito ? Colors.amber : Colors.grey,
                     ),
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Chip(
+                label: Text(lugar.categoria),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                lugar.descripcionLarga,
+                style: const TextStyle(fontSize: 16, height: 1.5),
               ),
             ),
           ],

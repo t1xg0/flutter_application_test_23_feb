@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/lugar.dart';
 
 class LugarCard extends StatelessWidget {
@@ -16,59 +17,64 @@ class LugarCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
       clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.only(bottom: 16),
       child: InkWell(
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(300),
-                child: Image.asset(
-                  lugar.imagen,
-                  width: 90,
-                  height: 90,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              lugar.imagen,
+              height: 180,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 180,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  color: Colors.grey.shade300,
+                  child: const Icon(Icons.image_not_supported, size: 40),
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
                       lugar.nombre,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      lugar.categoria,
-                      style: TextStyle(
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      lugar.descripcionCorta,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                  ),
+                  Icon(
+                    esFavorito ? Icons.star : Icons.star_border,
+                    color: esFavorito ? Colors.amber : Colors.grey,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                lugar.categoria,
+                style: TextStyle(
+                  color: Colors.indigo.shade700,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(width: 8),
-              Icon(
-                esFavorito ? Icons.star : Icons.star_border,
-                color: esFavorito ? Colors.amber : null,
-              ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+              child: Text(lugar.descripcionCorta),
+            ),
+          ],
         ),
       ),
     );
